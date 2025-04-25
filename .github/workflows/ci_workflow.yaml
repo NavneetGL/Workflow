@@ -48,6 +48,12 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven-3-jdk-17@master
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}  
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
       - name: Configure Maven for JFrog
         run: |
           mkdir -p ~/.m2
