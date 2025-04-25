@@ -49,7 +49,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/maven@v2
+        uses: snyk/actions/maven-3-jdk-17@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
