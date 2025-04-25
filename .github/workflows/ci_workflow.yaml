@@ -50,10 +50,8 @@ jobs:
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/maven-3-jdk-17@master
-        with:
-          args: test
         env:
-          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}  # Explicitly pass JAVA_HOME
+          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}  
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Configure Maven for JFrog
