@@ -96,4 +96,10 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+    <repository>
+        <id>artifactory</id>
+        <url>https://trial8kmwlh.jfrog.io/artifactory/libs-release
+    </repository>
+</distributionManagement>     
 </project>
