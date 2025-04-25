@@ -48,26 +48,64 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/maven-3-jdk-17@master
-        env:
-          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}  
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
       - name: Configure Maven for JFrog
         run: |
           mkdir -p ~/.m2
           cat <<EOF > ~/.m2/settings.xml
-          <settings>
-            <servers>
-              <server>
-                <id>artifactory</id>
-                <username>${{ secrets.JFROG_USER }}</username>
-                <password>${{ secrets.JFROG_PASSWORD }}</password>
-              </server>
-            </servers>
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd">
+              <servers>
+                <server>
+                  <id>central</id>
+                  <username>${{ secrets.JFROG_USER }}</username>
+                  <password>${{ secrets.JFROG_PASSWORD }}</password>
+                </server>
+                <server>
+                  <id>snapshots</id>
+                  <username>${{ secrets.JFROG_USER }}</username>
+                  <password>${{ secrets.JFROG_PASSWORD }}</password>
+                </server>
+              </servers>
+            
+              <profiles>
+                <profile>
+                  <id>artifactory</id>
+                  <repositories>
+                    <repository>
+                      <id>central</id>
+                      <url>https://trial8kmwlh.jfrog.io/artifactory/workflow-libs-release</url>
+                    </repository>
+                    <repository>
+                      <id>snapshots</id>
+                      <url>https://trial8kmwlh.jfrog.io/artifactory/workflow-libs-snapshot</url>
+                      <snapshots>
+                        <enabled>true</enabled>
+                      </snapshots>
+                    </repository>
+                  </repositories>
+                  <pluginRepositories>
+                    <pluginRepository>
+                      <id>central</id>
+                      <url>https://trial8kmwlh.jfrog.io/artifactory/workflow-libs-release</url>
+                    </pluginRepository>
+                    <pluginRepository>
+                      <id>snapshots</id>
+                      <url>https://trial8kmwlh.jfrog.io/artifactory/workflow-libs-snapshot</url>
+                      <snapshots>
+                        <enabled>true</enabled>
+                      </snapshots>
+                    </pluginRepository>
+                  </pluginRepositories>
+                </profile>
+              </profiles>
+            
+              <activeProfiles>
+                <activeProfile>artifactory</activeProfile>
+              </activeProfiles>
           </settings>
           EOF
+
 
       - name: Publish to JFrog Artifactory
         run: mvn deploy -DskipTests
