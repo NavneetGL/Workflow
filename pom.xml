@@ -99,7 +99,7 @@
     <distributionManagement>
     <repository>
         <id>artifactory</id>
-        <url>https://trial8kmwlh.jfrog.io/artifactory/libs-release
+        <url>https://trial8kmwlh.jfrog.io/artifactory/libs-release</url>
     </repository>
 </distributionManagement>     
 </project>
