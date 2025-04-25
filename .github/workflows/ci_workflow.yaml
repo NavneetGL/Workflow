@@ -19,9 +19,6 @@ jobs:
           distribution: 'temurin'
           java-version: 17
           
-      - name: Set JAVA_HOME environment variable
-        run: echo "JAVA_HOME=${{ steps.setup-java.outputs.java-home }}" >> $GITHUB_ENV    
-
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -53,10 +50,11 @@ jobs:
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/maven-3-jdk-17@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: test
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}  # Explicitly pass JAVA_HOME
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Configure Maven for JFrog
         run: |
