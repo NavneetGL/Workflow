@@ -98,8 +98,9 @@
     </build>
     <distributionManagement>
     <repository>
-        <id>artifactory</id>
-        <url>https://trial8kmwlh.jfrog.io/artifactory/api/maven/libs-release-local-libs-snapshot</url>
+        <id>central</id>
+        <name>a0tgklldboxbq-artifactory-primary-0-releases</name>
+        <url>https://trial8kmwlh.jfrog.io/artifactory/libs-release-local-libs-release</url>
     </repository>
-</distributionManagement>     
+    </distributionManagement>     
 </project>
